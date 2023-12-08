@@ -16,8 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.project.mobile.dailydraft.Adapter;
 import com.project.mobile.dailydraft.R;
 import com.project.mobile.dailydraft.SqliteHelper;
 
@@ -30,9 +28,8 @@ public class CatatanFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         View root = inflater.inflate(R.layout.fragment_catatan, container, false);
-        final TextView textView = root.findViewById(R.id.list_view);
-
+        final TextView textView = root.findViewById(R.id.text_catatan);
+        return root;
     }
 }
