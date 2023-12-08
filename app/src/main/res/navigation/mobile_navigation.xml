@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_catatan">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.project.mobile.dailydraft.ui.home.HomeFragment"
+        android:id="@+id/nav_catatan"
+        android:name="com.project.mobile.dailydraft.ui.catatan.CatatanFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_catatan" />
 
     <fragment
         android:id="@+id/nav_gallery"
@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.project.mobile.dailydraft.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_todolist"
+        android:name="com.project.mobile.dailydraft.ui.todolist.TodolistFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_todolist" />
 </navigation>
