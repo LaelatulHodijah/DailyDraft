@@ -1,15 +1,21 @@
 package com.project.mobile.dailydraft;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,65 +23,111 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.project.mobile.dailydraft.adapter.Adapter;
 import com.project.mobile.dailydraft.databinding.ActivityMain2Binding;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class MainActivity2 extends AppCompatActivity {
+    ListView listView;
+    AlertDialog.Builder dialog;
+    List<Data> itemList = new ArrayList<Data>();
+    Adapter adapter;
+    SqliteHelper SQLite = new SqliteHelper(this);
+
+    public static final  String TAG_ID = "id";
+    public static final  String TAG_NAME = "name";
+    public static final  String TAG_ADDRESS = "address";
 
     private AppBarConfiguration mAppBarConfiguration;
-private ActivityMain2Binding binding;
+    private ActivityMain2Binding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-     binding = ActivityMain2Binding.inflate(getLayoutInflater());
-     setContentView(binding.getRoot());
+        //
+        SQLite = new SqliteHelper(getApplicationContext());
+        FloatingActionButton fab = findViewById(R.id.fab);
 
-        setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
+        //list
+        listView = (ListView) findViewById(R.id.listview);
+        fab.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity2.this, InsertActivity.class);
+                startActivity(intent);
+
             }
         });
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_catatan, R.id.nav_gallery, R.id.nav_todolist)
-                .setOpenableLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        //Tambah adapter
+        adapter = new Adapter(MainActivity2.this, itemList);
+        listView.setAdapter(adapter);
 
-        MenuItem navLogOutItem = navigationView.getMenu().findItem(R.id.nav_log_out);
-        navLogOutItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = new Intent(MainActivity2.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+            public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+                // TODO Auto-generates method stub
+                final String idx = itemList.get(position).getId();
+                final String name = itemList.get(position).getName();
+                final String address = itemList.get(position).getAddress();
+
+                final CharSequence[] dialogitem = {"Edit", "Delete"};
+                dialog = new AlertDialog.Builder(MainActivity2.this);
+                dialog.setCancelable(true);
+                dialog.setItems(dialogitem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generates method stub
+                        switch (which){
+                            case 0:
+                                Intent intent = new Intent(MainActivity2.this, InsertActivity.class);
+                                intent.putExtra(TAG_ID, idx);
+                                intent.putExtra(TAG_NAME, name);
+                                intent.putExtra(TAG_ADDRESS, address);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                SQLite.delete(Integer.parseInt(idx));
+                                itemList.clear();
+                                getAllData();
+                                break;
+                        }
+                    }
+                }).show();
                 return false;
             }
         });
+        getAllData();
     }
+    private void getAllData(){
+        ArrayList<HashMap<String, String>> row = SQLite.getAllData();
 
+        for (int i = 0; i <row.size(); i++){
+            String id = row.get(i).get(TAG_ID);
+            String poster = row.get(i).get(TAG_NAME);
+            String title = row.get(i).get(TAG_ADDRESS);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_activity2, menu);
-        return true;
+            Data data = new Data();
+            data.setId(id);
+            data.setName(poster);
+            data.setAddress(title);
+            itemList.add(data);
+        }
+        adapter.notifyDataSetChanged();
     }
-
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    protected void onResume(){
+        super.onResume();
+        itemList.clear();
+        getAllData();
     }
 
 }
