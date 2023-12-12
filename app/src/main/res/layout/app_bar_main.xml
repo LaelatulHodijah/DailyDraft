@@ -16,6 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_width = "match_parent"
             android:background="@color/coklat"
+            android:text="Daily Draft"
               app:popupTheme="@style/Theme.DailyDraft.PopupOverlay"
             android:layout_height = "?attr/actionBarSize" />
 
