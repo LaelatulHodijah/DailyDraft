@@ -15,6 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width = "match_parent"
             android:background="@color/coklat"
+            android:text="Daily Draft"
             app:popupTheme="@style/Theme.DailyDraft.PopupOverlay"
             android:layout_height = "?attr/actionBarSize" />
 
@@ -91,12 +92,16 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="submit"/>
+        android:background="#C07A4C"
+        android:drawableTint="#88FFFFFF"
+        android:text="Simpan"
+        android:textColorHighlight="#191717"
+        android:textColorLink="#050505" />
     <Button
         android:id="@+id/btn_cancel"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="cancel"/>
+        android:text="Batal"/>
 
 </LinearLayout>

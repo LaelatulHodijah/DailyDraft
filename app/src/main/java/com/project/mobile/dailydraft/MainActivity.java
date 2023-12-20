@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar.make(buttonLogin, "Successfully Logged in!", Snackbar.LENGTH_LONG).show();
 
                         //User Logged in Successfully Launch You home screen activity
-                        Intent intent=new Intent(MainActivity.this,MainActivity2.class);
+                        Intent intent=new Intent(MainActivity.this,HomeActivity.class);
                         intent.putExtra("key", Email);
                         startActivity(intent);
                         finish();

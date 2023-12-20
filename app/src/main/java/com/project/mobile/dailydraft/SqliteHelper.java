@@ -20,7 +20,6 @@ public class SqliteHelper extends SQLiteOpenHelper{
     //TABLE NAME
     public static final String TABLE_USERS = "users";
     public static final String TABLE_SQLite = "sqlite";
-    public static final String TABLE_DATA = "data";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_ADDRESS = "address";
@@ -37,6 +36,19 @@ public class SqliteHelper extends SQLiteOpenHelper{
 
     //COLUMN password
     public static final String KEY_PASSWORD = "password";
+
+    // Table name and columns
+    public static final String TABLE_TODO = "todo";
+    public static final String COLUM_ID = "_id";
+    public static final String COLUM_TASK = "task";
+    public static final String COLUM_DATE = "date";
+
+    // Create table query
+    private static final String CREATE_TABLE_TODO =
+            "CREATE TABLE " + TABLE_TODO + "(" +
+                    COLUM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUM_TASK + " TEXT NOT NULL, " +
+                    COLUM_DATE + " TEXT NOT NULL);";
 
     //SQL for creating users table
     public static final String SQL_TABLE_USERS = " CREATE TABLE " + TABLE_USERS
@@ -62,14 +74,17 @@ public class SqliteHelper extends SQLiteOpenHelper{
         //Create Table when oncreate gets called
         sqLiteDatabase.execSQL(SQL_TABLE_USERS);
         sqLiteDatabase.execSQL(SQL_TABLE_SQLITE);
+        sqLiteDatabase.execSQL(CREATE_TABLE_TODO);
 
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         //drop table to create new one if database version updated
         sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TABLE_USERS);
         sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TABLE_SQLite);
+        onCreate(sqLiteDatabase);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TODO);
         onCreate(sqLiteDatabase);
     }
 

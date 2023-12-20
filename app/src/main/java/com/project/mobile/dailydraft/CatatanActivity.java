@@ -1,38 +1,29 @@
 package com.project.mobile.dailydraft;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.project.mobile.dailydraft.adapter.Adapter;
-import com.project.mobile.dailydraft.databinding.ActivityMain2Binding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity2 extends AppCompatActivity {
+public class CatatanActivity extends AppCompatActivity {
+
     ListView listView;
     AlertDialog.Builder dialog;
     List<Data> itemList = new ArrayList<Data>();
@@ -47,7 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_catatan);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -63,13 +54,13 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity2.this, InsertActivity.class);
+                Intent intent = new Intent(CatatanActivity.this, InsertActivity.class);
                 startActivity(intent);
-
             }
         });
+
         //Tambah adapter
-        adapter = new Adapter(MainActivity2.this, itemList);
+        adapter = new Adapter(CatatanActivity.this, itemList);
         listView.setAdapter(adapter);
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -81,7 +72,7 @@ public class MainActivity2 extends AppCompatActivity {
                 final String address = itemList.get(position).getAddress();
 
                 final CharSequence[] dialogitem = {"Edit", "Delete"};
-                dialog = new AlertDialog.Builder(MainActivity2.this);
+                dialog = new AlertDialog.Builder(CatatanActivity.this);
                 dialog.setCancelable(true);
                 dialog.setItems(dialogitem, new DialogInterface.OnClickListener() {
                     @Override
@@ -89,7 +80,7 @@ public class MainActivity2 extends AppCompatActivity {
                         // TODO Auto-generates method stub
                         switch (which){
                             case 0:
-                                Intent intent = new Intent(MainActivity2.this, InsertActivity.class);
+                                Intent intent = new Intent(CatatanActivity.this, InsertActivity.class);
                                 intent.putExtra(TAG_ID, idx);
                                 intent.putExtra(TAG_NAME, name);
                                 intent.putExtra(TAG_ADDRESS, address);
@@ -130,20 +121,9 @@ public class MainActivity2 extends AppCompatActivity {
         itemList.clear();
         getAllData();
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity2, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity2.this, MainActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
 }

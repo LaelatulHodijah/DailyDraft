@@ -45,30 +45,26 @@ public class InsertActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        getSupportActionBar().setTitle("Buat Catatan");
+
         txt_id = (EditText) findViewById(R.id.txt_id);
         txt_name = (EditText) findViewById(R.id.txt_name);
         txt_address = (EditText) findViewById(R.id.txt_address);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         btn_cancel = (Button) findViewById(R.id.btn_cancel);
 
-        id = getIntent().getStringExtra(MainActivity2.TAG_ID);
-        name = getIntent().getStringExtra(MainActivity2.TAG_NAME);
-        address = getIntent().getStringExtra(MainActivity2.TAG_ADDRESS);
+        id = getIntent().getStringExtra(CatatanActivity.TAG_ID);
+        name = getIntent().getStringExtra(CatatanActivity.TAG_NAME);
+        address = getIntent().getStringExtra(CatatanActivity.TAG_ADDRESS);
 
-        if (id == null || id == "") {
-            setTitle("Add Data");
-        } else {
-            setTitle("Edit Data");
-            txt_id.setText(id);
-            txt_name.setText(name);
-            txt_address.setText(address);
-        }
+
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +123,7 @@ public class InsertActivity extends AppCompatActivity {
     private void save() {
         if (String.valueOf(txt_name.getText()).equals(null) || String.valueOf(txt_name.getText()).equals("") ||
                 String.valueOf(txt_address.getText()).equals(null) || String.valueOf(txt_address.getText()).equals("")) {
-            Toast.makeText(getApplicationContext(), "Please input name or address ...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Masukan Judul dan Keterangan terlebih dahulu...", Toast.LENGTH_SHORT).show();
         } else {
             SQLite.insert(txt_name.getText().toString().trim(), txt_address.getText().toString().trim());
             blank();
@@ -138,7 +134,7 @@ public class InsertActivity extends AppCompatActivity {
     private void edit() {
         if (String.valueOf(txt_name.getText()).equals(null) || String.valueOf(txt_name.getText()).equals("") ||
                 String.valueOf(txt_address.getText()).equals(null) || String.valueOf(txt_address.getText()).equals("")) {
-            Toast.makeText(getApplicationContext(), "Please input name or address ...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Masukan Judul dan Keterangan terlebih dahulu...", Toast.LENGTH_SHORT).show();
         } else {
             SQLite.update(Integer.parseInt(txt_id.getText().toString().trim()), txt_name.getText().toString().trim(),
                     txt_address.getText().toString().trim());
